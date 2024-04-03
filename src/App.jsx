@@ -11,7 +11,7 @@ function App() {
   const [pesoUser, setPesoUser] = useState(0);
 
   const [resultadoImc, setResultadoImc] = useState(0);
-  const [feito, setFeito] = useState(true);
+  const [imcResult, setImcResult] = useState('');
 
   const calcularImc = (altura, peso) => {
     const mult = Math.pow(altura, 2);
@@ -20,31 +20,36 @@ function App() {
 
   const verificarIMC = (result) => {
 
-    if(result < 18.5){
-      return( <p> Magreza - {result}</p> )
-    } else if(result >= 18.5 && result < 25){
-      return( <p> Normal - {result}</p>)
-    } else if(result >= 25 && result < 30){
-      return( <p> Sobrepeso - {result}</p> )
-    } else if(result >= 30 && result < 40){
-      return( <p> Obesidade - {result} </p> )
-    } else if( result >= 40 && result <= 10000) {
-      return( <p> Obesidade grave - {result} </p>)
+    if (result >= 5 && result < 18.5) {
+      return ("Magreza")
+
+    } else if (result >= 18.5 && result < 25) {
+      return ("Normal")
+
+    } else if (result >= 25 && result < 30) {
+      return ("Sobrepeso")
+
+    } else if (result >= 30 && result < 40) {
+      return ("Obesidade")
+
+    } else if (result >= 40 && result <= 10000) {
+      return ("Obesidade grave")
+
     } else {
-      return( <p>Realizando calculo </p> )
+      return (<p>Realizando calculo </p>)
     }
 
-    setResultadoImc(0);
 
   }
 
   useEffect(() => {
 
-    setFeito(false);
-    setAlturaUser(variavelAux / 100);
-    setResultadoImc(calcularImc(alturaUser, pesoUser));
+    const altura = variavelAux / 100;
 
-    
+    const imc = calcularImc(altura, pesoUser);
+    setResultadoImc(imc);
+    setImcResult(verificarIMC(imc.toFixed(2)));
+
 
   }, [pesoUser, variavelAux]);
 
@@ -56,7 +61,9 @@ function App() {
         <input type="number" placeholder="Seu peso" onBlur={e => setPesoUser(e.target.value)} />
       </form>
 
-      {verificarIMC(resultadoImc.toFixed(2))}
+      <Tabelas result={imcResult} />
+
+      { }
 
     </div>
   )
